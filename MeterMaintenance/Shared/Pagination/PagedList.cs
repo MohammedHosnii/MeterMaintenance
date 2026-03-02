@@ -1,0 +1,31 @@
+﻿using System.Collections.Generic;
+using System;
+using System.Linq;
+
+namespace Shared.Pagination
+{
+    public class PagedList<T> : List<T>
+    {
+        public int CurrentPage { get; set; }
+        public int TotalPages { get; set; }
+        public int PageSize { get; set; }
+        public int TotalCount { get; set; }
+        public PagedList(IEnumerable<T> items, int count, int pageNumber, int pageSize)
+        {
+            CurrentPage = pageNumber;
+            TotalPages = (int)Math.Ceiling(count / (double)pageSize);
+            PageSize = pageSize;
+            TotalCount = count;//pageNumber * pageSize;//count;
+            AddRange(items);
+        }
+        public static PagedList<T> Create(IEnumerable<T> source, int count, int pageNumber, int pageSize)
+        {
+            // var count = count;// source.Count();
+            //var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            var items = source.ToList();
+
+            return new PagedList<T>(items, count, pageNumber, pageSize);
+        }
+
+    }
+}

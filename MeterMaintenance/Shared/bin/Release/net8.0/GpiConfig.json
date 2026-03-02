@@ -1,0 +1,5 @@
+{
+  "ConnString": "Server= .;Database=PublicLighting;User Id=sa;Password=Giza@123456;Encrypt=True;TrustServerCertificate=True;Connect Timeout=180;",
+  "HangfireConnString": "Server= .;Database=HangfireDB;User Id=sa;Password=Giza@123456;Encrypt=True;TrustServerCertificate=True;"
+
+}
