@@ -93,7 +93,7 @@ namespace MeterMaintenanceDB.OfflineRepo
                     {
                         // link to header
                         d.MaintenanceRecordCode =
-                            model.Header.MaintenanceRecordCode.ToString();
+                            model.Header.MaintenanceRecordCode;
 
                         await _db.ExecuteAsync(detailSql, d, tran);
                     }
@@ -117,103 +117,9 @@ namespace MeterMaintenanceDB.OfflineRepo
                 if (con.State == ConnectionState.Closed)
                     await con.OpenAsync();
 
-                using (SqlTransaction transaction = con.BeginTransaction())
-                {
-                    try
-                    {
-                        using (SqlCommand cmd = con.CreateCommand())
-                        {
-                            cmd.Transaction = transaction;
-                            cmd.CommandType = CommandType.Text;
-
-                            // ================= HEADER MERGE =================
-                            cmd.CommandText = @"
-                        MERGE MeterMaintenance_LocalDB.dbo.MaintenanceRecord AS T
-                        USING ServerDB.MeterMaintenanceDB.dbo.MaintenanceRecord AS S
-                        ON T.MaintenanceRecordCode = S.MaintenanceRecordCode
-
-                        WHEN MATCHED THEN
-                        UPDATE SET
-                            T.MaintenanceRecordDate   = S.MaintenanceRecordDate,
-                            T.CompanySectorDept_Id    = S.CompanySectorDept_Id,
-                            T.LabCenter_Id            = S.LabCenter_Id,
-                            T.MeterCount              = S.MeterCount,
-                            T.WorkingMetersCount      = S.WorkingMetersCount,
-                            T.RepairedMetersCount     = S.RepairedMetersCount,
-                            T.RetiredMetersCount      = S.RetiredMetersCount,
-                            T.CompanySectorDept_Level = S.CompanySectorDept_Level,
-                            T.ISSync = 1
-
-                        WHEN NOT MATCHED THEN
-                        INSERT (
-                            MaintenanceRecordDate,
-                            CompanySectorDept_Id,
-                            LabCenter_Id,
-                            MeterCount,
-                            WorkingMetersCount,
-                            RepairedMetersCount,
-                            RetiredMetersCount,
-                            MaintenanceRecordCode,
-                            CompanySectorDept_Level,
-                            ISSync,
-                            UserId
-                        )
-                        VALUES (
-                            S.MaintenanceRecordDate,
-                            S.CompanySectorDept_Id,
-                            S.LabCenter_Id,
-                            S.MeterCount,
-                            S.WorkingMetersCount,
-                            S.RepairedMetersCount,
-                            S.RetiredMetersCount,
-                            S.MaintenanceRecordCode,
-                            S.CompanySectorDept_Level,
-                            1,
-                            S.UserId
-                        );";
-
-                            await cmd.ExecuteNonQueryAsync();
-
-                            // ================= DETAILS MERGE =================
-                            cmd.CommandText = @"
-                        MERGE MeterMaintenance_LocalDB.dbo.MaintenanceRecord_Detail AS T
-                        USING ServerDB.MeterMaintenanceDB.dbo.MaintenanceRecord_Detail AS S
-                        ON T.MaintenanceRecordCode = S.MaintenanceRecordCode
-                        AND T.MeterNumber = S.MeterNumber
-
-                        WHEN MATCHED THEN
-                        UPDATE SET
-                            T.TestResultCode       = S.TestResultCode,
-                            T.CorrectiveActionCode = S.CorrectiveActionCode,
-                            T.ISSync = 1
-
-                        WHEN NOT MATCHED THEN
-                        INSERT (
-                            MaintenanceRecordCode,
-                            MeterNumber,
-                            TestResultCode,
-                            CorrectiveActionCode,
-                            ISSync
-                        )
-                        VALUES (
-                            S.MaintenanceRecordCode,
-                            S.MeterNumber,
-                            S.TestResultCode,
-                            S.CorrectiveActionCode,
-                            1
-                        );";
-
-                            await cmd.ExecuteNonQueryAsync();
-                        }
-
-                        transaction.Commit();
-                    }
-                    catch (Exception)
-                    {
-                        transaction.Rollback();
-                        throw;
-                    }
-                }
+                
+                var syncRepo = new SyncRepository(con);
+                await syncRepo.ExecuteSyncAllTablesAsync();
             }
         }
 
@@ -324,25 +230,33 @@ namespace MeterMaintenanceDB.OfflineRepo
                             string detailSql = @"
                     INSERT INTO MaintenanceRecord_Detail
                     (
-                        MaintenanceRecordCode,
-                        MeterNumber,
-                        TestResultCode,
-                        CorrectiveActionCode,
-                        ISSync
+                            MaintenanceRecordCode,
+							MeterNumber,
+							TestResultCode,
+							CorrectiveActionCode,
+							ErrorNumber,
+							CreationDateTime,
+							Notes,
+							ModificationDateTime,
+							ISSync
                     )
                     VALUES
                     (
                         @MaintenanceRecordCode,
-                        @MeterNumber,
-                        @TestResultCode,
-                        @CorrectiveActionCode,
-                        @ISSync
+						@MeterNumber,
+						@TestResultCode,
+						@CorrectiveActionCode,
+						@ErrorNumber,
+						@CreationDateTime,
+						@Notes,
+						@ModificationDateTime,
+						@ISSync
                     );";
 
                     foreach (var d in model.Details)
                     {
                         d.MaintenanceRecordCode =
-                            model.Header.MaintenanceRecordCode.ToString();
+                            model.Header.MaintenanceRecordCode;
 
                         d.ISSync = false;
 

@@ -9,3 +9,15 @@ E:\MeterMaintenance\MeterMaintenance\MeterMaintenanceShared\obj\Debug\netstandar
 E:\MeterMaintenance\MeterMaintenance\MeterMaintenanceShared\obj\Debug\netstandard2.0\MeterMaintenanceShared.csproj.CoreCompileInputs.cache
 E:\MeterMaintenance\MeterMaintenance\MeterMaintenanceShared\obj\Debug\netstandard2.0\MeterMaintenanceShared.dll
 E:\MeterMaintenance\MeterMaintenance\MeterMaintenanceShared\obj\Debug\netstandard2.0\MeterMaintenanceShared.pdb
+D:\MeterMaintenance\MeterMaintenance\MeterMaintenance\MeterMaintenanceShared\bin\Debug\netstandard2.0\GpiConfig.json
+D:\MeterMaintenance\MeterMaintenance\MeterMaintenance\MeterMaintenanceShared\bin\Debug\netstandard2.0\MeterMaintenanceShared.deps.json
+D:\MeterMaintenance\MeterMaintenance\MeterMaintenance\MeterMaintenanceShared\bin\Debug\netstandard2.0\MeterMaintenanceShared.dll
+D:\MeterMaintenance\MeterMaintenance\MeterMaintenance\MeterMaintenanceShared\bin\Debug\netstandard2.0\MeterMaintenanceShared.pdb
+D:\MeterMaintenance\MeterMaintenance\MeterMaintenance\MeterMaintenanceShared\obj\Debug\netstandard2.0\MeterMaintenanceShared.csproj.AssemblyReference.cache
+D:\MeterMaintenance\MeterMaintenance\MeterMaintenance\MeterMaintenanceShared\obj\Debug\netstandard2.0\MeterMaintenanceShared.GeneratedMSBuildEditorConfig.editorconfig
+D:\MeterMaintenance\MeterMaintenance\MeterMaintenance\MeterMaintenanceShared\obj\Debug\netstandard2.0\MeterMaintenanceShared.AssemblyInfoInputs.cache
+D:\MeterMaintenance\MeterMaintenance\MeterMaintenance\MeterMaintenanceShared\obj\Debug\netstandard2.0\MeterMaintenanceShared.AssemblyInfo.cs
+D:\MeterMaintenance\MeterMaintenance\MeterMaintenance\MeterMaintenanceShared\obj\Debug\netstandard2.0\MeterMaintenanceShared.csproj.CoreCompileInputs.cache
+D:\MeterMaintenance\MeterMaintenance\MeterMaintenance\MeterMaintenanceShared\obj\Debug\netstandard2.0\MeterMaintenanceShared.sourcelink.json
+D:\MeterMaintenance\MeterMaintenance\MeterMaintenance\MeterMaintenanceShared\obj\Debug\netstandard2.0\MeterMaintenanceShared.dll
+D:\MeterMaintenance\MeterMaintenance\MeterMaintenance\MeterMaintenanceShared\obj\Debug\netstandard2.0\MeterMaintenanceShared.pdb

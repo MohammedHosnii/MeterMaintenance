@@ -28,11 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -57,9 +57,11 @@
             this.Column_CompanySectorDept_Level = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column_LabCenterName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.butt_mode = new System.Windows.Forms.Button();
             this.butt_cancel = new System.Windows.Forms.Button();
             this.butt_Save = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.butt_print = new System.Windows.Forms.Button();
             this.txt_RetiredMetersCount = new System.Windows.Forms.TextBox();
             this.txt_RepairedMetersCount = new System.Windows.Forms.TextBox();
             this.txt_WorkingMetersCount = new System.Windows.Forms.TextBox();
@@ -76,7 +78,7 @@
             this.txt_MaintenanceRecordDate = new System.Windows.Forms.MaskedTextBox();
             this.combo_LabCenter = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.butt_mode = new System.Windows.Forms.Button();
+            this.txt_MaintenanceRecordCode = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -381,6 +383,17 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "أدخال محضر جديد";
             // 
+            // butt_mode
+            // 
+            this.butt_mode.BackColor = System.Drawing.Color.LemonChiffon;
+            this.butt_mode.Enabled = false;
+            this.butt_mode.Location = new System.Drawing.Point(278, 30);
+            this.butt_mode.Name = "butt_mode";
+            this.butt_mode.Size = new System.Drawing.Size(212, 33);
+            this.butt_mode.TabIndex = 14;
+            this.butt_mode.Text = "إدخال محضر جديد";
+            this.butt_mode.UseVisualStyleBackColor = false;
+            // 
             // butt_cancel
             // 
             this.butt_cancel.ForeColor = System.Drawing.Color.DarkRed;
@@ -406,6 +419,8 @@
             // groupBox4
             // 
             this.groupBox4.BackColor = System.Drawing.Color.LightCyan;
+            this.groupBox4.Controls.Add(this.txt_MaintenanceRecordCode);
+            this.groupBox4.Controls.Add(this.butt_print);
             this.groupBox4.Controls.Add(this.txt_RetiredMetersCount);
             this.groupBox4.Controls.Add(this.txt_RepairedMetersCount);
             this.groupBox4.Controls.Add(this.txt_WorkingMetersCount);
@@ -421,6 +436,20 @@
             this.groupBox4.TabIndex = 11;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "الاعداد";
+            // 
+            // butt_print
+            // 
+            this.butt_print.ForeColor = System.Drawing.Color.DarkOliveGreen;
+            this.butt_print.Image = global::MeterMaintenanceApp.Properties.Resources.printer;
+            this.butt_print.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.butt_print.Location = new System.Drawing.Point(32, 370);
+            this.butt_print.Name = "butt_print";
+            this.butt_print.Size = new System.Drawing.Size(115, 66);
+            this.butt_print.TabIndex = 15;
+            this.butt_print.Text = "طباعة";
+            this.butt_print.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.butt_print.UseVisualStyleBackColor = true;
+            this.butt_print.Click += new System.EventHandler(this.butt_print_Click);
             // 
             // txt_RetiredMetersCount
             // 
@@ -511,14 +540,14 @@
             // 
             // dataGridView1
             // 
-            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle16.Font = new System.Drawing.Font("Times New Roman", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Times New Roman", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column_ndx,
@@ -537,10 +566,10 @@
             // 
             // Column_ndx
             // 
-            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle17.BackColor = System.Drawing.Color.LemonChiffon;
-            dataGridViewCellStyle17.Font = new System.Drawing.Font("Times New Roman", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Column_ndx.DefaultCellStyle = dataGridViewCellStyle17;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.LemonChiffon;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Times New Roman", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Column_ndx.DefaultCellStyle = dataGridViewCellStyle2;
             this.Column_ndx.HeaderText = "م";
             this.Column_ndx.MinimumWidth = 6;
             this.Column_ndx.Name = "Column_ndx";
@@ -549,10 +578,10 @@
             // 
             // Column_MeterNumber
             // 
-            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle18.Font = new System.Drawing.Font("Times New Roman", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle18.ForeColor = System.Drawing.Color.DarkRed;
-            this.Column_MeterNumber.DefaultCellStyle = dataGridViewCellStyle18;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Times New Roman", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.DarkRed;
+            this.Column_MeterNumber.DefaultCellStyle = dataGridViewCellStyle3;
             this.Column_MeterNumber.HeaderText = "رقم العداد";
             this.Column_MeterNumber.MinimumWidth = 6;
             this.Column_MeterNumber.Name = "Column_MeterNumber";
@@ -560,9 +589,9 @@
             // 
             // Column_TestResult
             // 
-            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle19.Font = new System.Drawing.Font("Times New Roman", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Column_TestResult.DefaultCellStyle = dataGridViewCellStyle19;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Times New Roman", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Column_TestResult.DefaultCellStyle = dataGridViewCellStyle4;
             this.Column_TestResult.HeaderText = "نتيجة الفحص";
             this.Column_TestResult.MinimumWidth = 6;
             this.Column_TestResult.Name = "Column_TestResult";
@@ -570,9 +599,9 @@
             // 
             // Column_CorrectiveActionCode
             // 
-            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle20.Font = new System.Drawing.Font("Times New Roman", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Column_CorrectiveActionCode.DefaultCellStyle = dataGridViewCellStyle20;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Times New Roman", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Column_CorrectiveActionCode.DefaultCellStyle = dataGridViewCellStyle5;
             this.Column_CorrectiveActionCode.HeaderText = "الاجراء التصحيحي";
             this.Column_CorrectiveActionCode.MinimumWidth = 6;
             this.Column_CorrectiveActionCode.Name = "Column_CorrectiveActionCode";
@@ -612,16 +641,17 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "تاريخ";
             // 
-            // butt_mode
+            // txt_MaintenanceRecordCode
             // 
-            this.butt_mode.BackColor = System.Drawing.Color.LemonChiffon;
-            this.butt_mode.Enabled = false;
-            this.butt_mode.Location = new System.Drawing.Point(278, 30);
-            this.butt_mode.Name = "butt_mode";
-            this.butt_mode.Size = new System.Drawing.Size(212, 33);
-            this.butt_mode.TabIndex = 14;
-            this.butt_mode.Text = "إدخال محضر جديد";
-            this.butt_mode.UseVisualStyleBackColor = false;
+            this.txt_MaintenanceRecordCode.BackColor = System.Drawing.Color.LemonChiffon;
+            this.txt_MaintenanceRecordCode.ForeColor = System.Drawing.Color.DarkBlue;
+            this.txt_MaintenanceRecordCode.Location = new System.Drawing.Point(12, 303);
+            this.txt_MaintenanceRecordCode.Name = "txt_MaintenanceRecordCode";
+            this.txt_MaintenanceRecordCode.ReadOnly = true;
+            this.txt_MaintenanceRecordCode.Size = new System.Drawing.Size(164, 34);
+            this.txt_MaintenanceRecordCode.TabIndex = 16;
+            this.txt_MaintenanceRecordCode.TabStop = false;
+            this.txt_MaintenanceRecordCode.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // MaintenanceRecordForm_OFFLine
             // 
@@ -696,5 +726,7 @@
         private System.Windows.Forms.Button butt_cancel;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button butt_mode;
+        private System.Windows.Forms.Button butt_print;
+        private System.Windows.Forms.TextBox txt_MaintenanceRecordCode;
     }
 }

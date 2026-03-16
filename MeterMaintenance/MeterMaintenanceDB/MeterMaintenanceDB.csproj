@@ -61,10 +61,12 @@
     <Compile Include="DatabaseInstallation\TestConnection.cs" />
     <Compile Include="LabCenterRepository.cs" />
     <Compile Include="MaintenanceRecordViewRepository.cs" />
+    <Compile Include="MeterMaintenanceReportRepository.cs" />
     <Compile Include="Model\CompanySectorDept.cs" />
     <Compile Include="Model\CorrectiveAction.cs" />
     <Compile Include="Model\LabCenter.cs" />
     <Compile Include="Model\MaintenanceRecordView.cs" />
+    <Compile Include="Model\MeterMaintenanceReport.cs" />
     <Compile Include="Model\Users.cs" />
     <Compile Include="OfflineModel\MaintenanceRecordDetailLocal.cs" />
     <Compile Include="OfflineModel\MeterMaintenanceFullLocalDto.cs" />

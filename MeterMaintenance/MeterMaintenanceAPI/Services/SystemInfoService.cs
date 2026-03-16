@@ -20,7 +20,7 @@ namespace MeterMaintenanceAPI.Services
         {
             await _systemInfo.GetActiveConnectionAsync();
 
-            if (_systemInfo.Connection_Local != null)
+            if (SystemInfo.Connection_Local != null)
                 _systemInfo.CollectSystemInfo();
 
             return _systemInfo.IsOnline;

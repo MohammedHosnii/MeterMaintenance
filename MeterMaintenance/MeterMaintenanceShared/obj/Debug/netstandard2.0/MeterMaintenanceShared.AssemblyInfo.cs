@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MeterMaintenanceShared")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a68afcd6fc608e9b3f52a4848aa4d712cf9b1e6d")]
 [assembly: System.Reflection.AssemblyProductAttribute("MeterMaintenanceShared")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MeterMaintenanceShared")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

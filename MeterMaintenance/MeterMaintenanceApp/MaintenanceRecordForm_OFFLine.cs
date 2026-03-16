@@ -1,4 +1,5 @@
-﻿using MeterMaintenanceApp.Services;
+﻿using MeterMaintenanceApp.ReportForms;
+using MeterMaintenanceApp.Services;
 using MeterMaintenanceApp.Services.MeterMaintenanceApp.Services;
 using MeterMaintenanceDB.OfflineModel;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Services.Description;
 using System.Windows.Forms;
 
 
@@ -243,6 +245,19 @@ namespace MeterMaintenanceApp
 
         private async void butt_Save_Click(object sender, EventArgs e)
         {
+            if(txt_MaintenanceRecordDate.Text== "    /  /")
+            {
+                MessageBox.Show("برجاء ادخال التاريخ");
+                this.ActiveControl=txt_MaintenanceRecordDate;
+                return;
+            }
+            if (dataGridView1.Rows.Count == 1)
+            {
+                MessageBox.Show("برجاء ادخال العدادات");
+                this.ActiveControl = dataGridView1;
+                return;
+            }    
+
             if (HasDuplicateMeters())
             {
                 MessageBox.Show("رقم عداد مكرر");
@@ -283,13 +298,13 @@ namespace MeterMaintenanceApp
                     WorkingMetersCount = GetInt(txt_WorkingMetersCount),
                     RepairedMetersCount = GetInt(txt_RepairedMetersCount),
                     RetiredMetersCount = GetInt(txt_RetiredMetersCount),
-                    ISSync = false,
+                    ISSync = isOnline,
                     CompanySectorDept_Level =
                         combo_CompanySectorDept_Level.SelectedIndex + 1,
                     UserId = 0
                 };
 
-          
+
                 if (add_update == 1)
                     header.MaintenanceRecordCode = currentCode;
                 else
@@ -312,7 +327,7 @@ namespace MeterMaintenanceApp
                             row.Cells["Column_TestResult"].Value?.ToString(),
                         CorrectiveActionCode =
                             row.Cells["Column_CorrectiveActionCode"].Value?.ToString(),
-                        ISSync = false
+                        ISSync = isOnline
                     });
                 }
 
@@ -335,13 +350,25 @@ namespace MeterMaintenanceApp
                     await _meterMaintenanceservice.UpdateAsync(fullDto);
                     MessageBox.Show("تم التعديل بنجاح ✅");
                 }
-                if( isOnline )
-                  await _meterMaintenanceservice.SyncFromServerToLocal(fullDto);
+                if (isOnline)
+                    await _meterMaintenanceservice.SyncFromServerToLocal(fullDto);
 
                 // reset mode
                 add_update = 0;
                 currentCode = 0;
+            
                 await LoadMaintenanceGridAsync(Convert.ToInt32(combo_Company.SelectedValue));
+
+                string message = " طباعة المحضر "    ;
+
+                message += "؟";
+                MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+                DialogResult result;
+                result = MessageBox.Show(message, "رسالة تحذيرية ", buttons, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
+
+                if (result == System.Windows.Forms.DialogResult.Yes)
+                {
+                }
                 cancelTask();
             }
             catch (Exception ex)
@@ -538,6 +565,7 @@ namespace MeterMaintenanceApp
         {
             dataGridView1.Rows.Clear();
             butt_mode.Text = groupBox3.Text = "إدخال محضر جديد";
+            butt_print.Visible = false;
             add_update = 0;
             txt_MaintenanceRecordDate.Text = string.Empty;
             foreach (Control text in groupBox4.Controls)
@@ -562,6 +590,7 @@ namespace MeterMaintenanceApp
                 var codeObj = dataGridView2.Rows[e.RowIndex]
                     .Cells["Column_MaintenanceRecordCode"]
                     .Value;
+                txt_MaintenanceRecordCode.Text = codeObj.ToString();
                 await FillWithRecord(codeObj);
 
             }
@@ -623,6 +652,7 @@ namespace MeterMaintenanceApp
             }
             currentCode = dto.Header.MaintenanceRecordCode;
             butt_mode.Text = groupBox3.Text = "تعديل محضر قديم";
+            butt_print.Visible = true;
             add_update = 1;
         }
 
@@ -633,6 +663,50 @@ namespace MeterMaintenanceApp
             string code = search.SelectedCode;
             await FillWithRecord(code);
         }
+
+        private void butt_print_Click(object sender, EventArgs e)
+        {
+            if (txt_MaintenanceRecordCode.Text != "")
+                PrintWithRecord(txt_MaintenanceRecordCode.Text);
+        }
+        public async Task PrintWithRecord(object codeObj)
+        {
+            if (codeObj == null) return;
+
+            long code = Convert.ToInt64(codeObj);
+            DataTable dt;
+            using (var service = new MeterMaintenanceReportService())
+            {
+                await service.InitializeAsync();
+
+                var report = await service.GetReportAsync(code);
+
+                 dt= InfoClass.ToDataTable(report);
+            }
+            try
+            {
+
+                this.Cursor = Cursors.WaitCursor;
+
+
+
+                FrmReportViewer frm = new FrmReportViewer(dt, @"\rpt\MaintenanceRecord.rpt");
+
+
+
+                this.Cursor = Cursors.Arrow;
+                frm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+
+                this.Cursor = Cursors.Arrow;
+                MessageBox.Show(ex.Message, "خطا",
+                MessageBoxButtons.OK, MessageBoxIcon.Hand);
+            }
+        }
+
+        
     }
 }
 

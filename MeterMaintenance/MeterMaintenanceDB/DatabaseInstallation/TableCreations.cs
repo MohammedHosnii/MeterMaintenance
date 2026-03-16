@@ -99,6 +99,10 @@ namespace MeterMaintenanceDB.DatabaseInstallation
                 MeterNumber BIGINT NOT NULL,
                 TestResultCode INT NOT NULL,
                 CorrectiveActionCode BIGINT NOT NULL,
+	            [ErrorNumber] [int] NOT NULL,
+	            [CreationDateTime] [datetime] NOT NULL,
+	            [Notes] [nvarchar](150) NULL,
+	            [ModificationDateTime] [datetime] NULL,             
                 ISSync BIT NOT NULL DEFAULT(0)
             );
 
