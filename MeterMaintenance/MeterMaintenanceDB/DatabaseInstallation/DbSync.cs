@@ -270,7 +270,9 @@ namespace MeterMaintenanceDB.DatabaseInstallation
 							S.UserId
 						);
 
-
+				UPDATE ServerDB.MeterMaintenanceDB.dbo.MaintenanceRecord
+						SET ISSync = 1
+						WHERE ISSync = 0;
 
 			/* =====================================================
 			MaintenanceRecord_Detail
@@ -281,9 +283,13 @@ namespace MeterMaintenanceDB.DatabaseInstallation
 			-----------------------------------------------------
 						UPDATE S
 						SET
-							S.TestResultCode       = L.TestResultCode,
-							S.CorrectiveActionCode = L.CorrectiveActionCode,
-							s.ISSync=L.ISSync
+							S.TestResultCode        = L.TestResultCode,
+							S.CorrectiveActionCode  = L.CorrectiveActionCode,
+							S.ErrorNumber           = L.ErrorNumber,
+							S.CreationDateTime      = L.CreationDateTime,
+							S.Notes                 = L.Notes,
+							S.ModificationDateTime  = L.ModificationDateTime,
+							S.ISSync                = L.ISSync
 						FROM ServerDB.MeterMaintenanceDB.dbo.MaintenanceRecord_Detail S
 						JOIN MeterMaintenance_LocalDB.dbo.MaintenanceRecord_Detail L
 							ON S.MaintenanceRecordCode = L.MaintenanceRecordCode
@@ -293,11 +299,16 @@ namespace MeterMaintenanceDB.DatabaseInstallation
 						-----------------------------------------------------
 						-- Local → Server : INSERT new
 						-----------------------------------------------------
-						INSERT INTO ServerDB.MeterMaintenanceDB.dbo.MaintenanceRecord_Detail (
+						INSERT INTO ServerDB.MeterMaintenanceDB.dbo.MaintenanceRecord_Detail
+						(
 							MaintenanceRecordCode,
 							MeterNumber,
 							TestResultCode,
 							CorrectiveActionCode,
+							ErrorNumber,
+							CreationDateTime,
+							Notes,
+							ModificationDateTime,
 							ISSync
 						)
 						SELECT
@@ -305,16 +316,20 @@ namespace MeterMaintenanceDB.DatabaseInstallation
 							L.MeterNumber,
 							L.TestResultCode,
 							L.CorrectiveActionCode,
+							L.ErrorNumber,
+							L.CreationDateTime,
+							L.Notes,
+							L.ModificationDateTime,
 							L.ISSync
 						FROM MeterMaintenance_LocalDB.dbo.MaintenanceRecord_Detail L
 						WHERE L.ISSync = 0
-						AND NOT EXISTS (
+						AND NOT EXISTS
+						(
 							SELECT 1
 							FROM ServerDB.MeterMaintenanceDB.dbo.MaintenanceRecord_Detail S
 							WHERE S.MaintenanceRecordCode = L.MaintenanceRecordCode
 							  AND S.MeterNumber = L.MeterNumber
 						);
-
 						-----------------------------------------------------
 						-- mark detail synced
 						-----------------------------------------------------
@@ -332,25 +347,44 @@ namespace MeterMaintenanceDB.DatabaseInstallation
 
 						WHEN MATCHED THEN
 						UPDATE SET
-							T.TestResultCode       = S.TestResultCode,
-							T.CorrectiveActionCode = S.CorrectiveActionCode,
-							T.ISSync = 1
+							T.TestResultCode        = S.TestResultCode,
+							T.CorrectiveActionCode  = S.CorrectiveActionCode,
+							T.ErrorNumber           = S.ErrorNumber,
+							T.CreationDateTime      = S.CreationDateTime,
+							T.Notes                 = S.Notes,
+							T.ModificationDateTime  = S.ModificationDateTime,
+							T.ISSync                = 1
 
 						WHEN NOT MATCHED THEN
-						INSERT (
+						INSERT
+						(
 							MaintenanceRecordCode,
 							MeterNumber,
 							TestResultCode,
 							CorrectiveActionCode,
+							ErrorNumber,
+							CreationDateTime,
+							Notes,
+							ModificationDateTime,
 							ISSync
 						)
-						VALUES (
+						VALUES
+						(
 							S.MaintenanceRecordCode,
 							S.MeterNumber,
 							S.TestResultCode,
 							S.CorrectiveActionCode,
+							S.ErrorNumber,
+							S.CreationDateTime,
+							S.Notes,
+							S.ModificationDateTime,
 							1
 						);
+
+
+						UPDATE ServerDB.MeterMaintenanceDB.dbo.MaintenanceRecord_Detail
+						SET ISSync = 1
+						WHERE ISSync = 0;
 
 			   -------------------------------XXXXXXXx---------
 				END TRY
@@ -367,6 +401,8 @@ namespace MeterMaintenanceDB.DatabaseInstallation
 				END CATCH
 
 			END;
+
+            
 
             ";
             ExecuteNonQuery(sql);
