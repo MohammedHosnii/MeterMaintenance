@@ -28,11 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -61,6 +61,7 @@
             this.butt_cancel = new System.Windows.Forms.Button();
             this.butt_Save = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.txt_MaintenanceRecordCode = new System.Windows.Forms.TextBox();
             this.butt_print = new System.Windows.Forms.Button();
             this.txt_RetiredMetersCount = new System.Windows.Forms.TextBox();
             this.txt_RepairedMetersCount = new System.Windows.Forms.TextBox();
@@ -71,14 +72,17 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.txt_MaintenanceRecordDate = new System.Windows.Forms.MaskedTextBox();
+            this.combo_LabCenter = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.Column_ndx = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column_MeterNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column_TestResult = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.Column_CorrectiveActionCode = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.txt_MaintenanceRecordDate = new System.Windows.Forms.MaskedTextBox();
-            this.combo_LabCenter = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.txt_MaintenanceRecordCode = new System.Windows.Forms.TextBox();
+            this.Column_ErrorNumber = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Column_CreationDateTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column_Notes = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column_ModificationDateTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -432,17 +436,30 @@
             this.groupBox4.ForeColor = System.Drawing.Color.DarkRed;
             this.groupBox4.Location = new System.Drawing.Point(6, 10);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(188, 484);
+            this.groupBox4.Size = new System.Drawing.Size(197, 484);
             this.groupBox4.TabIndex = 11;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "الاعداد";
+            // 
+            // txt_MaintenanceRecordCode
+            // 
+            this.txt_MaintenanceRecordCode.BackColor = System.Drawing.Color.LemonChiffon;
+            this.txt_MaintenanceRecordCode.Font = new System.Drawing.Font("Times New Roman", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txt_MaintenanceRecordCode.ForeColor = System.Drawing.Color.DarkBlue;
+            this.txt_MaintenanceRecordCode.Location = new System.Drawing.Point(3, 303);
+            this.txt_MaintenanceRecordCode.Name = "txt_MaintenanceRecordCode";
+            this.txt_MaintenanceRecordCode.ReadOnly = true;
+            this.txt_MaintenanceRecordCode.Size = new System.Drawing.Size(194, 27);
+            this.txt_MaintenanceRecordCode.TabIndex = 16;
+            this.txt_MaintenanceRecordCode.TabStop = false;
+            this.txt_MaintenanceRecordCode.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // butt_print
             // 
             this.butt_print.ForeColor = System.Drawing.Color.DarkOliveGreen;
             this.butt_print.Image = global::MeterMaintenanceApp.Properties.Resources.printer;
             this.butt_print.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.butt_print.Location = new System.Drawing.Point(32, 370);
+            this.butt_print.Location = new System.Drawing.Point(36, 370);
             this.butt_print.Name = "butt_print";
             this.butt_print.Size = new System.Drawing.Size(115, 66);
             this.butt_print.TabIndex = 15;
@@ -455,7 +472,7 @@
             // 
             this.txt_RetiredMetersCount.BackColor = System.Drawing.Color.LemonChiffon;
             this.txt_RetiredMetersCount.ForeColor = System.Drawing.Color.DarkRed;
-            this.txt_RetiredMetersCount.Location = new System.Drawing.Point(12, 232);
+            this.txt_RetiredMetersCount.Location = new System.Drawing.Point(16, 232);
             this.txt_RetiredMetersCount.Name = "txt_RetiredMetersCount";
             this.txt_RetiredMetersCount.ReadOnly = true;
             this.txt_RetiredMetersCount.Size = new System.Drawing.Size(73, 34);
@@ -467,7 +484,7 @@
             // 
             this.txt_RepairedMetersCount.BackColor = System.Drawing.Color.LemonChiffon;
             this.txt_RepairedMetersCount.ForeColor = System.Drawing.Color.DarkGreen;
-            this.txt_RepairedMetersCount.Location = new System.Drawing.Point(12, 177);
+            this.txt_RepairedMetersCount.Location = new System.Drawing.Point(16, 177);
             this.txt_RepairedMetersCount.Name = "txt_RepairedMetersCount";
             this.txt_RepairedMetersCount.ReadOnly = true;
             this.txt_RepairedMetersCount.Size = new System.Drawing.Size(73, 34);
@@ -479,7 +496,7 @@
             // 
             this.txt_WorkingMetersCount.BackColor = System.Drawing.Color.LemonChiffon;
             this.txt_WorkingMetersCount.ForeColor = System.Drawing.Color.DarkGreen;
-            this.txt_WorkingMetersCount.Location = new System.Drawing.Point(12, 124);
+            this.txt_WorkingMetersCount.Location = new System.Drawing.Point(16, 124);
             this.txt_WorkingMetersCount.Name = "txt_WorkingMetersCount";
             this.txt_WorkingMetersCount.ReadOnly = true;
             this.txt_WorkingMetersCount.Size = new System.Drawing.Size(73, 34);
@@ -491,7 +508,7 @@
             // 
             this.txt_MeterCount.BackColor = System.Drawing.Color.LemonChiffon;
             this.txt_MeterCount.ForeColor = System.Drawing.Color.DarkBlue;
-            this.txt_MeterCount.Location = new System.Drawing.Point(12, 45);
+            this.txt_MeterCount.Location = new System.Drawing.Point(16, 45);
             this.txt_MeterCount.Name = "txt_MeterCount";
             this.txt_MeterCount.ReadOnly = true;
             this.txt_MeterCount.Size = new System.Drawing.Size(73, 34);
@@ -502,7 +519,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(95, 232);
+            this.label5.Location = new System.Drawing.Point(99, 232);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(86, 25);
             this.label5.TabIndex = 3;
@@ -512,7 +529,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.ForeColor = System.Drawing.Color.DarkGreen;
-            this.label4.Location = new System.Drawing.Point(90, 177);
+            this.label4.Location = new System.Drawing.Point(94, 177);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(91, 25);
             this.label4.TabIndex = 2;
@@ -522,7 +539,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.ForeColor = System.Drawing.Color.DarkBlue;
-            this.label2.Location = new System.Drawing.Point(101, 50);
+            this.label2.Location = new System.Drawing.Point(105, 50);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(68, 25);
             this.label2.TabIndex = 0;
@@ -532,7 +549,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.ForeColor = System.Drawing.Color.DarkGreen;
-            this.label3.Location = new System.Drawing.Point(110, 124);
+            this.label3.Location = new System.Drawing.Point(114, 124);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(51, 25);
             this.label3.TabIndex = 1;
@@ -540,72 +557,35 @@
             // 
             // dataGridView1
             // 
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Times New Roman", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("Times New Roman", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle11;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column_ndx,
             this.Column_MeterNumber,
             this.Column_TestResult,
-            this.Column_CorrectiveActionCode});
-            this.dataGridView1.Location = new System.Drawing.Point(218, 75);
+            this.Column_CorrectiveActionCode,
+            this.Column_ErrorNumber,
+            this.Column_CreationDateTime,
+            this.Column_Notes,
+            this.Column_ModificationDateTime});
+            this.dataGridView1.Location = new System.Drawing.Point(217, 75);
             this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 25;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(1136, 375);
+            this.dataGridView1.Size = new System.Drawing.Size(1166, 375);
             this.dataGridView1.TabIndex = 10;
+            this.dataGridView1.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridView1_DataError);
             this.dataGridView1.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_RowEnter);
             this.dataGridView1.RowLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_RowLeave);
-            // 
-            // Column_ndx
-            // 
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.LemonChiffon;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Times New Roman", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Column_ndx.DefaultCellStyle = dataGridViewCellStyle2;
-            this.Column_ndx.HeaderText = "م";
-            this.Column_ndx.MinimumWidth = 6;
-            this.Column_ndx.Name = "Column_ndx";
-            this.Column_ndx.ReadOnly = true;
-            this.Column_ndx.Width = 25;
-            // 
-            // Column_MeterNumber
-            // 
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Times New Roman", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.DarkRed;
-            this.Column_MeterNumber.DefaultCellStyle = dataGridViewCellStyle3;
-            this.Column_MeterNumber.HeaderText = "رقم العداد";
-            this.Column_MeterNumber.MinimumWidth = 6;
-            this.Column_MeterNumber.Name = "Column_MeterNumber";
-            this.Column_MeterNumber.Width = 200;
-            // 
-            // Column_TestResult
-            // 
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Times New Roman", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Column_TestResult.DefaultCellStyle = dataGridViewCellStyle4;
-            this.Column_TestResult.HeaderText = "نتيجة الفحص";
-            this.Column_TestResult.MinimumWidth = 6;
-            this.Column_TestResult.Name = "Column_TestResult";
-            this.Column_TestResult.Width = 250;
-            // 
-            // Column_CorrectiveActionCode
-            // 
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Times New Roman", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Column_CorrectiveActionCode.DefaultCellStyle = dataGridViewCellStyle5;
-            this.Column_CorrectiveActionCode.HeaderText = "الاجراء التصحيحي";
-            this.Column_CorrectiveActionCode.MinimumWidth = 6;
-            this.Column_CorrectiveActionCode.Name = "Column_CorrectiveActionCode";
-            this.Column_CorrectiveActionCode.Width = 250;
             // 
             // txt_MaintenanceRecordDate
             // 
@@ -641,17 +621,81 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "تاريخ";
             // 
-            // txt_MaintenanceRecordCode
+            // Column_ndx
             // 
-            this.txt_MaintenanceRecordCode.BackColor = System.Drawing.Color.LemonChiffon;
-            this.txt_MaintenanceRecordCode.ForeColor = System.Drawing.Color.DarkBlue;
-            this.txt_MaintenanceRecordCode.Location = new System.Drawing.Point(12, 303);
-            this.txt_MaintenanceRecordCode.Name = "txt_MaintenanceRecordCode";
-            this.txt_MaintenanceRecordCode.ReadOnly = true;
-            this.txt_MaintenanceRecordCode.Size = new System.Drawing.Size(164, 34);
-            this.txt_MaintenanceRecordCode.TabIndex = 16;
-            this.txt_MaintenanceRecordCode.TabStop = false;
-            this.txt_MaintenanceRecordCode.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle12.BackColor = System.Drawing.Color.LemonChiffon;
+            dataGridViewCellStyle12.Font = new System.Drawing.Font("Times New Roman", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Column_ndx.DefaultCellStyle = dataGridViewCellStyle12;
+            this.Column_ndx.HeaderText = "م";
+            this.Column_ndx.MinimumWidth = 6;
+            this.Column_ndx.Name = "Column_ndx";
+            this.Column_ndx.ReadOnly = true;
+            this.Column_ndx.Width = 25;
+            // 
+            // Column_MeterNumber
+            // 
+            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle13.Font = new System.Drawing.Font("Times New Roman", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle13.ForeColor = System.Drawing.Color.DarkRed;
+            this.Column_MeterNumber.DefaultCellStyle = dataGridViewCellStyle13;
+            this.Column_MeterNumber.HeaderText = "رقم العداد";
+            this.Column_MeterNumber.MinimumWidth = 6;
+            this.Column_MeterNumber.Name = "Column_MeterNumber";
+            this.Column_MeterNumber.Width = 200;
+            // 
+            // Column_TestResult
+            // 
+            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle14.Font = new System.Drawing.Font("Times New Roman", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Column_TestResult.DefaultCellStyle = dataGridViewCellStyle14;
+            this.Column_TestResult.HeaderText = "نتيجة الفحص";
+            this.Column_TestResult.MinimumWidth = 6;
+            this.Column_TestResult.Name = "Column_TestResult";
+            this.Column_TestResult.Width = 250;
+            // 
+            // Column_CorrectiveActionCode
+            // 
+            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle15.Font = new System.Drawing.Font("Times New Roman", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Column_CorrectiveActionCode.DefaultCellStyle = dataGridViewCellStyle15;
+            this.Column_CorrectiveActionCode.HeaderText = "الاجراء التصحيحي";
+            this.Column_CorrectiveActionCode.MinimumWidth = 6;
+            this.Column_CorrectiveActionCode.Name = "Column_CorrectiveActionCode";
+            this.Column_CorrectiveActionCode.Width = 250;
+            // 
+            // Column_ErrorNumber
+            // 
+            this.Column_ErrorNumber.HeaderText = "خطأ";
+            this.Column_ErrorNumber.MinimumWidth = 6;
+            this.Column_ErrorNumber.Name = "Column_ErrorNumber";
+            this.Column_ErrorNumber.Width = 125;
+            // 
+            // Column_CreationDateTime
+            // 
+            this.Column_CreationDateTime.DataPropertyName = "CreationDateTime";
+            this.Column_CreationDateTime.HeaderText = "تاريخ";
+            this.Column_CreationDateTime.MinimumWidth = 6;
+            this.Column_CreationDateTime.Name = "Column_CreationDateTime";
+            this.Column_CreationDateTime.Visible = false;
+            this.Column_CreationDateTime.Width = 125;
+            // 
+            // Column_Notes
+            // 
+            this.Column_Notes.DataPropertyName = "Notes";
+            this.Column_Notes.HeaderText = "ملاحظات";
+            this.Column_Notes.MinimumWidth = 6;
+            this.Column_Notes.Name = "Column_Notes";
+            this.Column_Notes.Width = 125;
+            // 
+            // Column_ModificationDateTime
+            // 
+            this.Column_ModificationDateTime.DataPropertyName = "ModificationDateTime";
+            this.Column_ModificationDateTime.HeaderText = "تعديل";
+            this.Column_ModificationDateTime.MinimumWidth = 6;
+            this.Column_ModificationDateTime.Name = "Column_ModificationDateTime";
+            this.Column_ModificationDateTime.Visible = false;
+            this.Column_ModificationDateTime.Width = 125;
             // 
             // MaintenanceRecordForm_OFFLine
             // 
@@ -695,11 +739,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox combo_LabCenter;
         private System.Windows.Forms.MaskedTextBox txt_MaintenanceRecordDate;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column_ndx;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column_MeterNumber;
-        private System.Windows.Forms.DataGridViewComboBoxColumn Column_TestResult;
-        private System.Windows.Forms.DataGridViewComboBoxColumn Column_CorrectiveActionCode;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
@@ -728,5 +767,14 @@
         private System.Windows.Forms.Button butt_mode;
         private System.Windows.Forms.Button butt_print;
         private System.Windows.Forms.TextBox txt_MaintenanceRecordCode;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column_ndx;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column_MeterNumber;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Column_TestResult;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Column_CorrectiveActionCode;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Column_ErrorNumber;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column_CreationDateTime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column_Notes;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column_ModificationDateTime;
     }
 }
