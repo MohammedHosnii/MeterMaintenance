@@ -78,6 +78,10 @@ namespace MeterMaintenanceDB.OfflineRepo
                         MeterNumber,
                         TestResultCode,
                         CorrectiveActionCode,
+                        ErrorNumber,
+                        CreationDateTime,
+                        Notes,
+                        ModificationDateTime,
                         ISSync
                     )
                     VALUES
@@ -86,6 +90,10 @@ namespace MeterMaintenanceDB.OfflineRepo
                         @MeterNumber,
                         @TestResultCode,
                         @CorrectiveActionCode,
+                        @ErrorNumber,
+                        @CreationDateTime,
+                        @Notes,
+                        @ModificationDateTime,
                         @ISSync
                     );";
 

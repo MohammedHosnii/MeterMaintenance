@@ -301,12 +301,20 @@ namespace MeterMaintenanceApp
 
                     details.Add(new MaintenanceRecordDetailLocal
                     {
-                        MeterNumber =
-                            row.Cells["Column_MeterNumber"].Value?.ToString(),
-                        TestResultCode =
-                            row.Cells["Column_TestResult"].Value?.ToString(),
-                        CorrectiveActionCode =
-                            row.Cells["Column_CorrectiveActionCode"].Value?.ToString(),
+                        MeterNumber = long.TryParse(row.Cells["Column_MeterNumber"].Value?.ToString(), out var meter) ? meter : 0,
+
+                        TestResultCode = int.TryParse(row.Cells["Column_TestResult"].Value?.ToString(), out var test) ? test : 0,
+
+                        CorrectiveActionCode = int.TryParse(row.Cells["Column_CorrectiveActionCode"].Value?.ToString(), out var action) ? action : 0,
+
+                        ErrorNumber = int.TryParse(row.Cells["Column_ErrorNumber"]?.Value?.ToString(), out var err) ? err : 0,
+
+                        Notes = row.Cells["Column_Notes"]?.Value?.ToString(),
+
+                        CreationDateTime = DateTime.Now,
+
+                        ModificationDateTime = null,
+
                         ISSync = false
                     });
                 }
@@ -417,13 +425,23 @@ namespace MeterMaintenanceApp
                 foreach (DataGridViewRow row in dataGridView1.Rows)
                 {
                     if (row.IsNewRow) continue;
-                    
+
                     details.Add(new MaintenanceRecordDetailLocal
                     {
-                       
-                        MeterNumber = row.Cells["Column_MeterNumber"].Value?.ToString(),
-                        TestResultCode = row.Cells["Column_TestResult"].Value?.ToString(),
-                        CorrectiveActionCode = row.Cells["Column_CorrectiveActionCode"].Value?.ToString(),
+                        MeterNumber = long.TryParse(row.Cells["Column_MeterNumber"].Value?.ToString(), out var meter) ? meter : 0,
+
+                        TestResultCode = int.TryParse(row.Cells["Column_TestResult"].Value?.ToString(), out var test) ? test : 0,
+
+                        CorrectiveActionCode = int.TryParse(row.Cells["Column_CorrectiveActionCode"].Value?.ToString(), out var action) ? action : 0,
+
+                        ErrorNumber = int.TryParse(row.Cells["Column_ErrorNumber"]?.Value?.ToString(), out var err) ? err : 0,
+
+                        Notes = row.Cells["Column_Notes"]?.Value?.ToString(),
+
+                        CreationDateTime = DateTime.Now,
+
+                        ModificationDateTime = null,
+
                         ISSync = false
                     });
                 }

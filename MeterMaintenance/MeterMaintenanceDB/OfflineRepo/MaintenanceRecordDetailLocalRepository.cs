@@ -21,59 +21,98 @@ namespace MeterMaintenanceDB.OfflineRepo
         // Get top 1000 records
         public async Task<IEnumerable<MaintenanceRecordDetailLocal>> GetAllAsync()
         {
-            string sql = @"SELECT TOP (1000) [Id],
-                                  [MaintenanceRecordCode],
-                                  [MeterNumber],
-                                  [TestResultCode],
-                                  [CorrectiveActionCode],
-                                  [ISSync]
-                           FROM [MeterMaintenance_LocalDB].[dbo].[MaintenanceRecord_Detail]";
+            string sql = @"SELECT 
+                            Id,
+                            MaintenanceRecordCode,
+                            MeterNumber,
+                            TestResultCode,
+                            CorrectiveActionCode,
+                            ErrorNumber,
+                            CreationDateTime,
+                            Notes,
+                            ModificationDateTime,
+                            ISSync
+                       FROM MeterMaintenance_LocalDB.dbo.MaintenanceRecord_Detail";
+
             return await _db.QueryAsync<MaintenanceRecordDetailLocal>(sql);
         }
 
         // Get record by Id
         public async Task<MaintenanceRecordDetailLocal> GetByIdAsync(int id)
         {
-            string sql = @"SELECT [Id],
-                                  [MaintenanceRecordCode],
-                                  [MeterNumber],
-                                  [TestResultCode],
-                                  [CorrectiveActionCode],
-                                  [ISSync]
-                           FROM [MeterMaintenance_LocalDB].[dbo].[MaintenanceRecord_Detail]
-                           WHERE Id = @Id";
+            string sql = @"SELECT
+                            Id,
+                            MaintenanceRecordCode,
+                            MeterNumber,
+                            TestResultCode,
+                            CorrectiveActionCode,
+                            ErrorNumber,
+                            CreationDateTime,
+                            Notes,
+                            ModificationDateTime,
+                            ISSync
+                       FROM MeterMaintenance_LocalDB.dbo.MaintenanceRecord_Detail
+                       WHERE Id = @Id";
+
             return await _db.QueryFirstOrDefaultAsync<MaintenanceRecordDetailLocal>(sql, new { Id = id });
         }
 
-        // Insert a new record
+        // Insert new record
         public async Task<int> AddAsync(MaintenanceRecordDetailLocal record)
         {
-            string sql = @"INSERT INTO [MeterMaintenance_LocalDB].[dbo].[MaintenanceRecord_Detail] 
-                            ([MaintenanceRecordCode], [MeterNumber], [TestResultCode], [CorrectiveActionCode], [ISSync])
-                           VALUES
-                            (@MaintenanceRecordCode, @MeterNumber, @TestResultCode, @CorrectiveActionCode, @ISSync);
-                           SELECT CAST(SCOPE_IDENTITY() as int);";
+            string sql = @"INSERT INTO MeterMaintenance_LocalDB.dbo.MaintenanceRecord_Detail
+                        (
+                            MaintenanceRecordCode,
+                            MeterNumber,
+                            TestResultCode,
+                            CorrectiveActionCode,
+                            ErrorNumber,
+                            CreationDateTime,
+                            Notes,
+                            ISSync
+                        )
+                       VALUES
+                        (
+                            @MaintenanceRecordCode,
+                            @MeterNumber,
+                            @TestResultCode,
+                            @CorrectiveActionCode,
+                            @ErrorNumber,
+                            GETDATE(),
+                            @Notes,
+                            @ISSync
+                        );
+
+                       SELECT CAST(SCOPE_IDENTITY() AS INT);";
+
             return await _db.ExecuteScalarAsync<int>(sql, record);
         }
 
-        // Update a record
+        // Update record
         public async Task<bool> UpdateAsync(MaintenanceRecordDetailLocal record)
         {
-            string sql = @"UPDATE [MeterMaintenance_LocalDB].[dbo].[MaintenanceRecord_Detail]
-                           SET MaintenanceRecordCode = @MaintenanceRecordCode,
-                               MeterNumber = @MeterNumber,
-                               TestResultCode = @TestResultCode,
-                               CorrectiveActionCode = @CorrectiveActionCode,
-                               ISSync = @ISSync
-                           WHERE Id = @Id";
+            string sql = @"UPDATE MeterMaintenance_LocalDB.dbo.MaintenanceRecord_Detail
+                       SET
+                            MaintenanceRecordCode = @MaintenanceRecordCode,
+                            MeterNumber = @MeterNumber,
+                            TestResultCode = @TestResultCode,
+                            CorrectiveActionCode = @CorrectiveActionCode,
+                            ErrorNumber = @ErrorNumber,
+                            Notes = @Notes,
+                            ModificationDateTime = GETDATE(),
+                            ISSync = @ISSync
+                       WHERE Id = @Id";
+
             int rows = await _db.ExecuteAsync(sql, record);
             return rows > 0;
         }
 
-        // Delete a record
+        // Delete record
         public async Task<bool> DeleteAsync(int id)
         {
-            string sql = @"DELETE FROM [MeterMaintenance_LocalDB].[dbo].[MaintenanceRecord_Detail] WHERE Id = @Id";
+            string sql = @"DELETE FROM MeterMaintenance_LocalDB.dbo.MaintenanceRecord_Detail
+                       WHERE Id = @Id";
+
             int rows = await _db.ExecuteAsync(sql, new { Id = id });
             return rows > 0;
         }
