@@ -16,7 +16,7 @@ namespace MeterMaintenanceDB.OfflineModel
 
         public int TestResultCode { get; set; }
 
-        public long CorrectiveActionCode { get; set; }
+        public int CorrectiveActionCode { get; set; }
 
         public int ErrorNumber { get; set; }
 
