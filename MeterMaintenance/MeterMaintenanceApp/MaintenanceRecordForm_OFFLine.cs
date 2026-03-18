@@ -1,6 +1,8 @@
-﻿using MeterMaintenanceApp.ReportForms;
+﻿using CrystalDecisions.ReportAppServer;
+using MeterMaintenanceApp.ReportForms;
 using MeterMaintenanceApp.Services;
 using MeterMaintenanceApp.Services.MeterMaintenanceApp.Services;
+using MeterMaintenanceDB.Model;
 using MeterMaintenanceDB.OfflineModel;
 using System;
 using System.Collections.Generic;
@@ -57,10 +59,18 @@ namespace MeterMaintenanceApp
             await LoadLabCentersAsync();
             await LoadTestResults();
             await LoadCorrectiveAction();
+            await LoadErrorNumber();
             _meterMaintenanceservice = new MeterMaintenanceLocalService();
             await _meterMaintenanceservice.InitializeAsync();
             groupBox2.Text = "المحاضر السابقة ل"+combo_Company.Text;
             await LoadMaintenanceGridAsync( Convert.ToInt32( combo_Company.SelectedValue));
+
+            Column_TestResult.DisplayStyle = DataGridViewComboBoxDisplayStyle.DropDownButton;
+            Column_CorrectiveActionCode.DisplayStyle = DataGridViewComboBoxDisplayStyle.DropDownButton;
+
+            Column_TestResult.DataPropertyName = "TestResultCode";
+            Column_CorrectiveActionCode.DataPropertyName = "CorrectiveActionCode";
+
         }
 
         private async Task LoadCompaniesAsync()
@@ -87,6 +97,31 @@ namespace MeterMaintenanceApp
             Column_CorrectiveActionCode.DisplayMember = "CorrectiveActionName";
             Column_CorrectiveActionCode.ValueMember = "CorrectiveActionCode";
            
+        }
+
+        private Task LoadErrorNumber()
+        {
+            DataTable dt_errors=new DataTable();
+            dt_errors.Columns.Add("ErrorNumber", typeof(int));
+            dt_errors.Columns.Add("Error",typeof(string));
+
+            DataRow dr = dt_errors.NewRow();
+            dr["ErrorNumber"] = 0;
+            dr["Error"] = "بدون خطأ";
+            dt_errors.Rows.Add(dr);
+            for (int i = 1; i < 51; i++) 
+            {
+                dr=dt_errors.NewRow();
+                dr["ErrorNumber"] =i.ToString();
+                dr["Error"]="Error "+i.ToString();
+                dt_errors.Rows.Add(dr);
+
+            }
+
+            Column_ErrorNumber.DataSource = dt_errors;
+            Column_ErrorNumber.DisplayMember = "Error";
+            Column_ErrorNumber.ValueMember = "ErrorNumber";
+            return Task.CompletedTask;
         }
 
         private async Task LoadLabCentersAsync()
@@ -173,7 +208,13 @@ namespace MeterMaintenanceApp
         {
             DataGridViewRow row= dataGridView1.Rows[e.RowIndex];
             if (!row.IsNewRow)
+            {
+                
                 dataGridView1.Rows[e.RowIndex].Cells[0].Value = e.RowIndex + 1;
+               if(add_update==0)
+                dataGridView1.Rows[e.RowIndex].Cells["Column_CreationDateTime"].Value =
+                    System.DateTime.Now.ToString();
+            }
             dataGridView1.EndEdit();
 
             CalaCounts();
@@ -321,13 +362,22 @@ namespace MeterMaintenanceApp
 
                     details.Add(new MaintenanceRecordDetailLocal
                     {
-                        MeterNumber =
-                            row.Cells["Column_MeterNumber"].Value?.ToString(),
-                        TestResultCode =
-                            row.Cells["Column_TestResult"].Value?.ToString(),
-                        CorrectiveActionCode =
-                            row.Cells["Column_CorrectiveActionCode"].Value?.ToString(),
-                        ISSync = isOnline
+                        MeterNumber = long.TryParse(row.Cells["Column_MeterNumber"].Value?.ToString(), out var meter) ? meter : 0,
+
+                        TestResultCode = int.TryParse(row.Cells["Column_TestResult"].Value?.ToString(), out var test) ? test : 0,
+
+                        CorrectiveActionCode = int.TryParse(row.Cells["Column_CorrectiveActionCode"].Value?.ToString(), out var action) ? action : 0,
+
+                        ErrorNumber = int.TryParse(row.Cells["Column_ErrorNumber"]?.Value?.ToString(), out var err) ? err : 0,
+
+                        Notes = row.Cells["Column_Notes"]?.Value?.ToString(),
+
+                        CreationDateTime = DateTime.TryParse(row.Cells["Column_CreationDateTime"]?.Value?.ToString(), out var createdate) ? createdate : DateTime.Now
+                                              ,
+
+                        ModificationDateTime = (add_update == 0) ? (DateTime?)null : DateTime.Now,
+
+                        ISSync = false
                     });
                 }
 
@@ -344,11 +394,49 @@ namespace MeterMaintenanceApp
                 {
                     await _meterMaintenanceservice.SaveAsync(fullDto);
                     MessageBox.Show("تم الادخال بنجاح ✅");
+
+                    DG2Source.Rows.Add(
+                     header.MaintenanceRecordDate,
+                     combo_Company.Text,
+                    
+                     header.MeterCount,
+                     header.WorkingMetersCount,
+                     header.RepairedMetersCount,
+                     header.RetiredMetersCount,
+                     header.MaintenanceRecordCode,
+                     isOnline,
+                     combo_CompanySectorDept_Level.Text,
+                      combo_LabCenter.Text
+
+
+                    );
                 }
                 else
                 {
                     await _meterMaintenanceservice.UpdateAsync(fullDto);
                     MessageBox.Show("تم التعديل بنجاح ✅");
+
+                    foreach (DataGridViewRow row in dataGridView2.Rows)
+                    {
+                        if (Convert.ToInt64(row.Cells["Column_MaintenanceRecordCode"].Value) == header.MaintenanceRecordCode)
+                        {
+                            row.Cells["Column_MaintenanceRecordDate"].Value = header.MaintenanceRecordDate;
+                            row.Cells["Column_CompanySectorDeptName"].Value = combo_Company.Text;
+                            row.Cells["Column_MeterCount"].Value =header.MeterCount;
+                            row.Cells["Column_WorkingMetersCount"].Value = header.WorkingMetersCount;
+                            row.Cells["Column_RepairedMetersCount"].Value = header.RepairedMetersCount;
+                            row.Cells["Column_RetiredMetersCount"].Value = header.RetiredMetersCount;
+                           
+                            row.Cells["Column_ISSync"].Value = isOnline;
+                            row.Cells["Column_CompanySectorDept_Level"].Value = combo_CompanySectorDept_Level.Text;
+                            row.Cells["Column_LabCenterName"].Value =combo_LabCenter.Text;
+                            
+
+                            break;
+                        }
+                    }
+                    
+
                 }
                 if (isOnline)
                     await _meterMaintenanceservice.SyncFromServerToLocal(fullDto);
@@ -357,7 +445,7 @@ namespace MeterMaintenanceApp
                 add_update = 0;
                 currentCode = 0;
             
-                await LoadMaintenanceGridAsync(Convert.ToInt32(combo_Company.SelectedValue));
+                //await LoadMaintenanceGridAsync(Convert.ToInt32(combo_Company.SelectedValue));
 
                 string message = " طباعة المحضر "    ;
 
@@ -368,6 +456,7 @@ namespace MeterMaintenanceApp
 
                 if (result == System.Windows.Forms.DialogResult.Yes)
                 {
+                    _ = PrintWithObject( fullDto);
                 }
                 cancelTask();
             }
@@ -377,108 +466,7 @@ namespace MeterMaintenanceApp
             }
         }
 
-        private async void butt_Save_Click_XXXXX(object sender, EventArgs e)
-        {
-            if (HasDuplicateMeters())
-            {
-                MessageBox.Show("رقم عداد مكرر");
-                return;
-            }
-            try
-            {
-                // ===============================
-                // HEADER
-                // ===============================
-                int CompanySectorDeptId = 0;
-                switch(Convert.ToInt32( combo_CompanySectorDept_Level.SelectedIndex+1))
-                {
-                    case 1:
-                        {
-                            CompanySectorDeptId = 
-                                Convert.ToInt32(combo_Company.SelectedValue);
-                        }
-                        break;
-                    case 2:
-                        {
-                            CompanySectorDeptId =
-                                Convert.ToInt32(combo_sector.SelectedValue);
-                        }
-                        break;
-                    case 3:
-                        {
-                            CompanySectorDeptId =
-                                Convert.ToInt32(combo_Department.SelectedValue);
-                        }
-                        break;
-                }
-
-
-                var header = new MeterMaintenanceLocal
-                {
-                    MaintenanceRecordDate = GetDate(txt_MaintenanceRecordDate),
-
-                    CompanySectorDept_Id = CompanySectorDeptId,
-
-                    LabCenter_Id = GetComboValue(combo_LabCenter),
-
-                    MeterCount = GetInt(txt_MeterCount),
-
-                    WorkingMetersCount = GetInt(txt_WorkingMetersCount),
-
-                    RepairedMetersCount = GetInt(txt_RepairedMetersCount),
-
-                    RetiredMetersCount = GetInt(txt_RetiredMetersCount),
-
-                    MaintenanceRecordCode = 0,
-
-                    ISSync = false,
-
-                    CompanySectorDept_Level = combo_CompanySectorDept_Level.SelectedIndex + 1,
-                    UserId = 0
-                };
-
-
-                // ===============================
-                // DETAILS
-                // (Example: from DataGridView)
-                // ===============================
-                var details = new List<MaintenanceRecordDetailLocal>();
-
-                foreach (DataGridViewRow row in dataGridView1.Rows)
-                {
-                    if (row.IsNewRow) continue;
-                    
-                    details.Add(new MaintenanceRecordDetailLocal
-                    {
-                       
-                        MeterNumber = row.Cells["Column_MeterNumber"].Value?.ToString(),
-                        TestResultCode = row.Cells["Column_TestResult"].Value?.ToString(),
-                        CorrectiveActionCode = row.Cells["Column_CorrectiveActionCode"].Value?.ToString(),
-                        ISSync = false
-                    });
-                }
-
-                // ===============================
-                // WRAP DTO
-                // ===============================
-                var fullDto = new MeterMaintenanceFullLocalDto
-                {
-                    Header = header,
-                    Details = details
-                };
-
-                // ===============================
-                // SAVE
-                // ===============================
-                await _meterMaintenanceservice.SaveAsync(fullDto);
-
-                MessageBox.Show("Saved successfully ✅");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error:\n" + ex.Message);
-            }
-        }
+       
         private int GetComboValue(ComboBox combo)
         {
             if (combo.SelectedValue == null)
@@ -640,15 +628,28 @@ namespace MeterMaintenanceApp
 
             dataGridView1.Rows.Clear();
             dataGridView1.RowTemplate.Height = 40;
+            dataGridView1.AutoGenerateColumns = false;
+            //dataGridView1.DataSource = dto.Details;
             int i = 0;
             foreach (var d in dto.Details)
             {
                 i++;
-                dataGridView1.Rows.Add(i,
-                    d.MeterNumber,
-                    d.TestResultCode,
-                    d.CorrectiveActionCode
-                );
+
+                int rowIndex = dataGridView1.Rows.Add();
+                var row = dataGridView1.Rows[rowIndex];
+
+                row.Cells["Column_ndx"].Value = i;
+                
+                row.Cells["Column_MeterNumber"].Value = d.MeterNumber;
+
+                row.Cells["Column_TestResult"].Value = d.TestResultCode.ToString();
+                row.Cells["Column_CorrectiveActionCode"].Value = d.CorrectiveActionCode.ToString();
+
+                row.Cells["Column_ErrorNumber"].Value = d.ErrorNumber;
+                row.Cells["Column_CreationDateTime"].Value = d.CreationDateTime;
+                row.Cells["Column_Notes"].Value = d.Notes;
+                row.Cells["Column_ModificationDateTime"].Value = d.ModificationDateTime;
+               
             }
             currentCode = dto.Header.MaintenanceRecordCode;
             butt_mode.Text = groupBox3.Text = "تعديل محضر قديم";
@@ -669,6 +670,83 @@ namespace MeterMaintenanceApp
             if (txt_MaintenanceRecordCode.Text != "")
                 PrintWithRecord(txt_MaintenanceRecordCode.Text);
         }
+
+        public async Task PrintWithObject(MeterMaintenanceFullLocalDto fullDto)
+        {
+            if (fullDto == null) return;
+
+            var reportList = new List<MeterMaintenanceReport>();
+
+            string _CompanySectorDept = "";
+
+            switch (combo_CompanySectorDept_Level.SelectedIndex + 1)
+            {
+                case 1:
+                    _CompanySectorDept =
+                         combo_Company.Text;
+                    break;
+
+                case 2:
+                    _CompanySectorDept =
+                        combo_sector.Text;
+                    break;
+
+                case 3:
+                    _CompanySectorDept =
+                        combo_Department.Text;
+                    break;
+            }
+
+            foreach (var d in fullDto.Details)
+            {
+                var report = new MeterMaintenanceReport
+                {
+                    // HEADER
+                    MaintenanceRecordDate = fullDto.Header.MaintenanceRecordDate,
+                    MeterCount = fullDto.Header.MeterCount,
+                    WorkingMetersCount = fullDto.Header.WorkingMetersCount,
+                    RepairedMetersCount = fullDto.Header.RepairedMetersCount,
+                    RetiredMetersCount = fullDto.Header.RetiredMetersCount,
+                    MaintenanceRecordCode = fullDto.Header.MaintenanceRecordCode,
+                    ISSync = fullDto.Header.ISSync,
+                    CompanySectorDept_Level = fullDto.Header.CompanySectorDept_Level,
+
+                    
+                    CompanySectorDept = _CompanySectorDept,
+                    LabCenter = combo_LabCenter.Text,
+                    User = txtUser.Text,  
+                    CompanyName = combo_Company.Text,
+
+                    // DETAILS
+                    MeterNumber = d.MeterNumber.ToString(),
+                    TestResult = d.TestResultCode.ToString(),  
+                    CorrectiveAction = d.CorrectiveActionCode.ToString()  
+                };
+
+                reportList.Add(report);
+            }
+            try
+            {
+                this.Cursor = Cursors.WaitCursor;
+
+                DataTable dt = InfoClass.ToDataTable(reportList);
+
+                FrmReportViewer frm = new FrmReportViewer(dt, @"\rpt\MaintenanceRecord.rpt");
+
+
+
+                this.Cursor = Cursors.Arrow;
+                frm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+
+                this.Cursor = Cursors.Arrow;
+                MessageBox.Show(ex.Message, "خطا",
+                MessageBoxButtons.OK, MessageBoxIcon.Hand);
+            }
+        }
+
         public async Task PrintWithRecord(object codeObj)
         {
             if (codeObj == null) return;
@@ -706,7 +784,13 @@ namespace MeterMaintenanceApp
             }
         }
 
-        
+        private void dataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            string xx = e.Exception.Message;
+            e.ThrowException = false;  
+        }
+
+       
     }
 }
 
